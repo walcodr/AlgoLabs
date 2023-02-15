@@ -13,12 +13,13 @@ import java.util.*;
 public class StateFarm {
   /**
    * Iterate through each line of input.
- * @param <E>
+   * @param <E>
    */
-  public static <E> void main(String[] args) throws IOException {
-    //InputStreamReader reader = new InputStreamReader(System.in, StandardCharsets.UTF_8);
-    //BufferedReader in = new BufferedReader(reader);
-    String line = "Get|Dog";
+  public static <E> void main(String[] args) {
+	  
+	long startTime = System.currentTimeMillis();
+	
+    String line = "ADD|Dog";
     String function;
     String input;
     Vector<E> cache = new Vector<E>();
@@ -26,57 +27,48 @@ public class StateFarm {
       StringTokenizer st = new StringTokenizer(line);
       function = st.nextToken("\\|");
       input = st.nextToken("\\|");
+      String[] methods = {"reset",
+    		  				"add",
+    		  				"get",
+    		  				"has",
+    		  				"remove"};
       
-      System.out.println(function + "++");
-      System.out.println(input + "++");
-
-  
-  switch (function)
-  {
-	  case "Reset":
-	      int size = 0;
-	      cache.removeAllElements();
-	      size = cache.size();
-	      System.out.println(size);
-	      break;
-	  case "Add":
-	      if(cache.add((E) input)) {
-	        System.out.println("True");
-	      }
-	      else {
-	        System.out.println("False");
-	      }
-	      break;
-	  case "Get":
-	      if(cache.contains(input)) {
-	        System.out.println(input);
-	      }
-	      else {
-	        System.out.println("NULL");
-	      }
-	      break;
-	  case "Has":
-	  	  if(cache.contains(input)) {
-	        System.out.println("True");
-	      }
-	      else {
-	        System.out.println("False");
-	      }
-	  	  break;
-	  case "Remove":
-	      if(cache.contains(input)) {
-	        cache.remove(input);
-	        System.out.println("True");
-	      }
-	      else {
-	        System.out.println("False");
-	      }
-	      break;
-	      
-	      
-  	}
+	
+	  try {
+		  if ( function.toLowerCase().equals((methods[0]))) {
+		      int size = 0;
+		      size = reset(cache);
+		      System.out.println(size);
+		  }
+		  else if ( function.toLowerCase().equals(methods[1])) {
+		      if(add(input, cache)) {
+		        System.out.println("True");
+		      }
+		      else {
+		        System.out.println("False");
+		      }
+		  }
+		  else if ( function.toLowerCase().equals(methods[2])) {
+		     	System.out.println(get(input, cache));
+		  }
+		  else if (function.toLowerCase().equals(methods[3])) {
+		  	  System.out.println(has(input, cache));
+		  }
+		  else if (function.toLowerCase().equals(methods[4])) {
+			  System.out.println(remove(input, cache));
+		  }
+		  else throw new Exception("Input not valid :: ");
+		  
+		  long endTime = System.currentTimeMillis();
+		  long elapsedTime = endTime - startTime;
+		  
+		  System.out.println("Time in milliseconds : " + elapsedTime);
+	  }      
+	  catch(Exception ex) {
+		  ex.printStackTrace();
+	  }
+  	
   }
-}
 
 
 
@@ -87,16 +79,15 @@ public class StateFarm {
 
 
 
-/*
-public static int Reset(Vector cache) {
-	  case (function.equals("Reset")) 
+
+
+  public static int reset(Vector cache) {
       int size = 0;
       cache.removeAllElements();
-      cache.size();
-      return size;
+      return cache.size();
     }
   
-  public static boolean Add(String input, Vector cache) {
+  public static boolean add(String input, Vector cache) {
       if(cache.add(input)) {
         return true;
       }
@@ -105,7 +96,7 @@ public static int Reset(Vector cache) {
       }
     }
 
-    public static String Get(String input, Vector cache) {
+    public static String get(String input, Vector cache) {
       if(cache.contains(input)) {
         return input;
       }
@@ -114,11 +105,11 @@ public static int Reset(Vector cache) {
       }
     }
 
-    public static boolean Has(String input, Vector cache) {
+    public static boolean has(String input, Vector cache) {
       return cache.contains(input);
     }
 
-    public static boolean Remove(String input, Vector cache) {
+    public static boolean remove(String input, Vector cache) {
       if(cache.contains(input)) {
         cache.remove(input);
         return true;
@@ -127,4 +118,7 @@ public static int Reset(Vector cache) {
         return false;
       }
     }
-*/
+    
+    
+    
+    }
